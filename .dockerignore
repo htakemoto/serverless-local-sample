@@ -1,0 +1,36 @@
+# Common files
+**/.git
+**/.gitignore
+helm
+node_modules
+npm-debug.log
+Jenkinsfile
+*/dist/
+*/build/
+*/layer/
+*/postman/
+README.md
+automation_pipelines.yaml
+Makefile
+terraform
+
+# Common Windows files
+**/Thumbs.db
+**/ehthumbs.db
+**/Desktop.ini
+
+# Common Mac files
+**/.DS_Store
+**/.DS_Store?
+**/.Trashes
+
+# Ignore files dowloaded by composer
+*/vendor/
+*/web/core/
+*/web/modules/contrib/
+*/web/themes/contrib/
+*/web/profiles/contrib/
+*/web/libraries/
+
+# Ignore private filesc
+*/private/*

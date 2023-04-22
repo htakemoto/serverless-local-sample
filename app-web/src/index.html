@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Serverless Local Sample</h1>
+
+<h2>Users</h2>
+<button type="button" onclick="getUsers()">Get Users</button>
+<div id="users"></div>
+
+<script>
+  function getUsers() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("users").innerHTML = renderUsers(this.responseText);
+      }
+    };
+    xhttp.open("GET", "api/users", true);
+    xhttp.send();
+  }
+
+  function renderUsers(usersStr) {
+    var users = JSON.parse(usersStr);
+    var listInHTML = '';
+    listInHTML += '<table>';
+    listInHTML += '<tr><td>ID</td><td>First Name</td><td>Last Name</td><td>Email</td></tr>';
+    for (var i = 0; i < users.length; i++) {
+      listInHTML += '<tr><td>' + users[i].id + '</td><td>' + users[i].firstName + '</td><td>' + users[i].lastName + '</td><td>' + users[i].email + '</td></tr>'
+    }
+    listInHTML += '</table>';
+    return listInHTML;
+  }
+</script>
+
+</body>
+</html>

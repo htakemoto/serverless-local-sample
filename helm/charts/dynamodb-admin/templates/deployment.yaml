@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dynamodb-admin.fullname" . }}
+  labels:
+    {{- include "dynamodb-admin.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "dynamodb-admin.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dynamodb-admin.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ include "dynamodb-admin.fullname" . }}
+        image: "{{ .Values.admin.image.repository }}:{{ .Values.admin.image.tag }}"
+        imagePullPolicy: {{ .Values.admin.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.admin.container.port }}
+        env:
+        {{- range $key, $value := .Values.admin.image.env }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+        {{- end }}

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dynamodb.fullname" . }}
+  labels:
+    {{- include "dynamodb.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "dynamodb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dynamodb.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ include "dynamodb.fullname" . }}
+        image: "{{ .Values.dynamodb.image.repository }}:{{ .Values.dynamodb.image.tag }}"
+        args: [ "-Djava.library.path=./DynamoDBLocal_lib", "-jar", "DynamoDBLocal.jar", "-sharedDb" ]
+        imagePullPolicy: {{ .Values.dynamodb.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.dynamodb.container.port }}
+        env:
+        {{- range $key, $value := .Values.dynamodb.image.env }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+        {{- end }}

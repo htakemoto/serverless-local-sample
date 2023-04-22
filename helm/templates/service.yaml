@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chart.fullname" . }}-api
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}-api
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "chart.selectorLabels" . | nindent 4 }}-api
+  ports:
+  - name: api-port
+    protocol: TCP
+    port: {{ .Values.app.api.service.port }}
+    targetPort: {{ .Values.app.api.container.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chart.fullname" . }}-web
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}-web
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "chart.selectorLabels" . | nindent 4 }}-web
+  ports:
+  - name: web-port
+    protocol: TCP
+    port: {{ .Values.app.web.service.port }}
+    targetPort: {{ .Values.app.web.container.port }}

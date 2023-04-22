@@ -1,0 +1,50 @@
+nameOverride: ""
+fullnameOverride: ""
+
+app:
+  api:
+    image:
+      repository: app-api
+      tag: latest
+      pullPolicy: IfNotPresent
+      env:
+        ENVIRONMENT: local
+        APP_VERSION: 0.0.0
+        DB_NAME_USER: app-user-local
+        AWS_REGION: us-east-1
+        AWS_ACCESS_KEY_ID: key
+        AWS_SECRET_ACCESS_KEY: key
+        DB_ENDPOINT: http://dynamodb:8000
+    container:
+      port: 3000
+    service:
+      port: 3000
+  web:
+    image:
+      repository: app-web
+      tag: latest
+      pullPolicy: IfNotPresent
+    container:
+      port: 80
+    service:
+      port: 8080
+
+dynamodb:
+  enabled: true
+  fullnameOverride: dynamodb
+  dynamodb:
+    image:
+      env:
+        AWS_ACCESS_KEY_ID: key
+        AWS_SECRET_ACCESS_KEY: key
+        DYNAMODB_SHARE_DB: '1'
+
+dynamodb-admin:
+  enabled: true
+  fullnameOverride: dynamodb-admin
+  admin:
+    image:
+      env:
+        AWS_ACCESS_KEY_ID: key
+        AWS_SECRET_ACCESS_KEY: key
+        DYNAMO_ENDPOINT: http://dynamodb:8000

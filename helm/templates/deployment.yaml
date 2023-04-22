@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}-api
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}-api
+spec:
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}-api
+  template:
+    metadata:
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}-api
+    spec:
+      containers:
+      - name: {{ include "chart.fullname" . }}-api
+        image: "{{ .Values.app.api.image.repository }}:{{ .Values.app.api.image.tag }}"
+        imagePullPolicy: {{ .Values.app.api.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.app.api.container.port }}
+        env:
+        {{- range $key, $value := .Values.app.api.image.env }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+        {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}-web
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}-web
+spec:
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}-web
+  template:
+    metadata:
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}-web
+    spec:
+      containers:
+      - name: {{ include "chart.fullname" . }}-web
+        image: "{{ .Values.app.web.image.repository }}:{{ .Values.app.web.image.tag }}"
+        imagePullPolicy: {{ .Values.app.web.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.app.web.container.port }}
+        env:
+        {{- range $key, $value := .Values.app.web.image.env }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+        {{- end }}
